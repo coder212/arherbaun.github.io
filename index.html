@@ -1,0 +1,61 @@
+			cara install archlinux versi saya
+
+saya akan menuliskan cara install archlinux menurut versi saya bukan 
+versi orang lain loh ada yang tau archlinux itu apa? kalo menurutku 
+archlinux ,os berkernel linux alis gnu/linux operating system yang mirip 
+lego jadi systemnya bisa dibongkar pasang, sesuka usernya.
+	langsung saja kita mulai tutorialnya sebagai berikut:
+1. buat partisi yang akan di install di fd /hd dengan cfdisk gparted 
+   terserah saja hehe kalo saya seperti ini sdb1 1,5g --> swap sdb2 5,5g 
+   --> / sdb3 dipake untuk /home
+2. taruh  vmlinuz di flashdisk lain kemudian rename jadi vmlinuz-linux 
+   vmlinuz bisa diambil di archlinux.iso /cd installer di folder 
+   arch/boot/i686/vmlinuz
+3. masukkan cd installer ke dalam notebook/pc 
+4. mkswap /dev/sdb1 membuat swap di fd 
+5. mkfs.ext4 /dev/sdb2 membuat file system dengan format ext4
+6. mkfs.ext4 /dev/sdb3 membuat file system dengan format ext4
+7. swapon /dev/sdb1 menghidupkan swap di /dev/sdb1
+8. mkdir /mnt/archlinux membuat folder archlinux di mnt
+9. mount /dev/sdb2 /mnt/archlinux memuat fd ke folder archlinux 
+10. mkdir -p /mnt/archlinux/proc /mnt/archlinux/sys /mnt/archlinux/mnt 
+    /mnt/archlinux/home
+11. mount /dev/sdb3 /mnt/archlinux/home memuat /dev/sdb3 ke home yang 
+    akan dijadikan home di system ente
+12. cp -r /bin /dev /run /srv /tmp /var /boot /etc /lib /opt /root 
+    /sbin /usr /mnt/archlinux/
+13. mkdir /mnt/file
+14. mount /dev/sdc /mnt/file memuat fd kedua yang saya miliki
+15. cp /mnt/file/vmlinuz-linux /mnt/archlinux/boot/
+16. genfstab -U -p /mnt/archlinux << /mnt/archlinux/etc/fstab generate 
+    file system arch gnu/linux u dipakai untuk dengan  uid di fstab
+17. arch-chroot /mnt/archlinux memindahkan root ke mnt/archlinux
+18. nano /etc/locale.gen kemudian hapus komen di id_ID.UTF8
+    tekan ctrl+ x lalu tekan y
+19. echo LANG=id_ID.UTF-8 >> /etc/locale.conf
+20. export LANG=id_ID.UTF-8
+21. hwclock --systohc --utc men set date ke utc
+22. rm /etc/localtime menghapus localtime
+23. ln -s /usr/share/zoneinfo/Asia/Jakarta /etc/localtime membuat link 
+    ke localtime
+24. nano /etc/hostname lalu ketikkan superarch
+25. rm /etc/systemd/system/getty@tty1.service.d/autologin.conf
+26. nano /etc/passwd ubah dari /usr/bin/zsh menjadi /bin/bash
+27. passwd root masukkan password arch1234. arch1234.
+28. useradd -m -g users -s /bin/bash user_name menambah user name
+29. passwd user_name user2345 user2345
+30. mkinitcpio -p linux
+31. grub-install --target=i386-pc --recheck --debug /dev/sdb install 
+    grub ke flasdisk --target=i386-pc digunakn hanya untuk bios
+32. grub-mkconfig - /boot/grub/grub.cfg membuat menu grub
+33. exit --> keluar dari root /mnt/archlinux
+34. umount /mnt/archlinux/home menutup mnt/archlinux/home akses ke
+    /dev/sdb3
+35. umount /mnt/archlinux
+36. umount /mnt/file
+37. reboot
+38. keluarkan cd installer 
+	selesai sudah kita install archlinux versi saya yang cuma cli 
+doang untuk guinya ketikan pacman -S namaprogram apa saja yang 
+dibutuhkan gui.
+nanti saya lanjutin lagi chapter selanjutnya.
